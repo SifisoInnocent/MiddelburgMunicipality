@@ -1,0 +1,182 @@
+{% extends 'issues/base.html' %}
+
+{% block title %}Dashboard - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <h4>Welcome, {{ user.get_full_name|default:user.username }}!</h4>
+                    <p class="text-muted">Here's your community service overview.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-list-alt fa-3x text-primary mb-3"></i>
+                    <h5>{{ stats.total }}</h5>
+                    <p class="text-muted">Total Issues</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                    <h5>{{ stats.submitted }}</h5>
+                    <p class="text-muted">Submitted</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-spinner fa-3x text-info mb-3"></i>
+                    <h5>{{ stats.in_progress }}</h5>
+                    <p class="text-muted">In Progress</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h5>{{ stats.resolved }}</h5>
+                    <p class="text-muted">Resolved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Recent Issues</h5>
+                </div>
+                <div class="card-body">
+                    {% if page_obj %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for issue in page_obj %}
+                                    <tr>
+                                        <td><code>{{ issue.reference_number }}</code></td>
+                                        <td><strong>{{ issue.title }}</strong></td>
+                                        <td><span class="badge bg-info">{{ issue.get_category_display }}</span></td>
+                                        <td>
+                                            {% if issue.status == 'submitted' %}
+                                                <span class="badge bg-warning">{{ issue.get_status_display }}</span>
+                                            {% elif issue.status == 'in_progress' %}
+                                                <span class="badge bg-info">{{ issue.get_status_display }}</span>
+                                            {% elif issue.status == 'resolved' %}
+                                                <span class="badge bg-success">{{ issue.get_status_display }}</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">{{ issue.get_status_display }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ issue.created_at|date:"M d, Y" }}</td>
+                                        <td>
+                                            <a href="{% url 'track_issue_detail' issue.reference_number %}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {% if page_obj.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                <li class="page-item active">
+                                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                                </li>
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                            <h5>No Issues Found</h5>
+                            <p class="text-muted">You haven't reported any issues yet.</p>
+                            <a href="{% url 'report_issue' %}" class="btn btn-primary">
+                                <i class="fas fa-plus-circle"></i> Report Your First Issue
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'report_issue' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-plus-circle"></i> Report Issue
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'track_issue' %}" class="btn btn-info w-100">
+                                <i class="fas fa-search"></i> Track Status
+                            </a>
+                        </div>
+                        {% if user.is_staff %}
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-warning w-100">
+                                <i class="fas fa-cog"></i> Admin Panel
+                            </a>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'logout' %}" class="btn btn-danger w-100">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

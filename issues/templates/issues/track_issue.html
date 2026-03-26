@@ -1,0 +1,248 @@
+{% extends 'issues/base_premium_new.html' %}
+
+{% block title %}Track Issue - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<!-- Search Section -->
+<div class="content-section" data-aos="fade-up">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="fas fa-search-location"></i>
+            Track Issue Progress
+        </h1>
+        <div class="section-actions">
+            <span class="badge badge-info">Live Tracking</span>
+        </div>
+    </div>
+    
+    <form method="get" class="card" style="margin-bottom: var(--space-2xl);">
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-lg); align-items: end;">
+            <div>
+                <label for="ref_search" class="form-label">
+                    <i class="fas fa-search"></i>
+                    Search by Reference Number
+                </label>
+                <input type="text" 
+                       id="ref_search" 
+                       name="ref" 
+                       class="form-control" 
+                       placeholder="Enter reference number (e.g., MUN-2026-12345)"
+                       value="{{ request.GET.ref|default:'' }}">
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+{% if issue %}
+<!-- Issue Details -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="100">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Issue Details
+        </h2>
+        <div class="section-actions">
+            <span class="badge 
+                {% if issue.status == 'submitted' %}badge-info{% elif issue.status == 'in_progress' %}badge-warning{% elif issue.status == 'resolved' %}badge-success{% else %}badge-danger{% endif %}">
+                {{ issue.get_status_display }}
+            </span>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-2xl);">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Reference Information</h3>
+            </div>
+            <div class="card-content">
+                <div style="display: grid; gap: var(--space-md);">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray-500);">Reference Number:</span>
+                        <span style="font-family: monospace; font-weight: 600; color: var(--primary);">{{ issue.reference_number }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray-500);">Date Reported:</span>
+                        <span style="color: var(--gray-700);">{{ issue.created_at|date:"F d, Y H:i" }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray-500);">Category:</span>
+                        <span class="badge badge-info">{{ issue.get_category_display }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray-500);">Priority:</span>
+                        <span class="badge 
+                            {% if issue.priority == 'low' %}badge-success{% elif issue.priority == 'medium' %}badge-warning{% elif issue.priority == 'high' %}badge-danger{% endif %}">
+                            {{ issue.get_priority_display }}
+                        </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray-500);">Status:</span>
+                        <span class="badge 
+                            {% if issue.status == 'submitted' %}badge-info{% elif issue.status == 'in_progress' %}badge-warning{% elif issue.status == 'resolved' %}badge-success{% else %}badge-danger{% endif %}">
+                            {{ issue.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Issue Details</h3>
+            </div>
+            <div class="card-content">
+                <div style="display: grid; gap: var(--space-md);">
+                    <div>
+                        <div style="color: var(--gray-500); margin-bottom: var(--space-sm);">Title:</div>
+                        <div style="color: var(--gray-800); font-weight: 600;">{{ issue.title }}</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--gray-500); margin-bottom: var(--space-sm);">Location:</div>
+                        <div style="color: var(--gray-800);">{{ issue.location }}</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--gray-500); margin-bottom: var(--space-sm);">Description:</div>
+                        <div style="color: var(--gray-800); line-height: 1.6;">{{ issue.description|linebreaksbr }}</div>
+                    </div>
+                    {% if issue.image %}
+                    <div>
+                        <div style="color: var(--gray-500); margin-bottom: var(--space-sm);">Image Attachment:</div>
+                        <div style="margin-bottom: var(--space-sm);">
+                            <img src="{{ issue.image.url }}" alt="Issue Image" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        </div>
+                        <a href="{{ issue.image.url }}" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: var(--space-sm);">
+                            <i class="fas fa-download"></i>
+                            Download Full Image
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Timeline -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="200">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-clock"></i>
+            Status Timeline
+        </h2>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+            <div style="position: relative; padding-left: var(--space-2xl);">
+                <!-- Timeline Line -->
+                <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--gray-300);"></div>
+                
+                <!-- Timeline Items -->
+                <div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+                    <!-- Submitted -->
+                    <div class="timeline-item" style="position: relative;">
+                        <div style="position: absolute; left: -6px; top: 0; width: 12px; height: 12px; background: var(--info); border-radius: 50%; border: 2px solid var(--white);"></div>
+                        <div style="margin-left: var(--space-xl); padding: var(--space-lg); background: var(--gray-50); border-radius: var(--radius-lg);">
+                            <div style="font-weight: 600; color: var(--info); margin-bottom: var(--space-xs);">Submitted</div>
+                            <div style="color: var(--gray-600); font-size: 0.9rem;">{{ issue.created_at|date:"F d, Y H:i" }}</div>
+                            <div style="color: var(--gray-500); font-size: 0.85rem; margin-top: var(--space-xs);">
+                                Issue reported and submitted to the system
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- In Progress -->
+                    {% if issue.status == 'in_progress' or issue.status == 'resolved' %}
+                    <div class="timeline-item" style="position: relative;">
+                        <div style="position: absolute; left: -6px; top: 0; width: 12px; height: 12px; background: var(--warning); border-radius: 50%; border: 2px solid var(--white);"></div>
+                        <div style="margin-left: var(--space-xl); padding: var(--space-lg); background: var(--gray-50); border-radius: var(--radius-lg);">
+                            <div style="font-weight: 600; color: var(--warning); margin-bottom: var(--space-xs);">In Progress</div>
+                            <div style="color: var(--gray-600); font-size: 0.9rem;">{{ issue.updated_at|date:"F d, Y H:i" }}</div>
+                            <div style="color: var(--gray-500); font-size: 0.85rem; margin-top: var(--space-xs);">
+                                Municipal team assigned and working on resolution
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Resolved -->
+                    {% if issue.status == 'resolved' %}
+                    <div class="timeline-item" style="position: relative;">
+                        <div style="position: absolute; left: -6px; top: 0; width: 12px; height: 12px; background: var(--success); border-radius: 50%; border: 2px solid var(--white);"></div>
+                        <div style="margin-left: var(--space-xl); padding: var(--space-lg); background: var(--gray-50); border-radius: var(--radius-lg);">
+                            <div style="font-weight: 600; color: var(--success); margin-bottom: var(--space-xs);">Resolved</div>
+                            <div style="color: var(--gray-600); font-size: 0.9rem;">{{ issue.updated_at|date:"F d, Y H:i" }}</div>
+                            <div style="color: var(--gray-500); font-size: 0.85rem; margin-top: var(--space-xs);">
+                                Issue successfully resolved and closed
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="300">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-tools"></i>
+            Actions
+        </h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg);">
+        <a href="{% url 'report_issue' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i>
+            Report New Issue
+        </a>
+        
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+            <i class="fas fa-tachometer-alt"></i>
+            Back to Dashboard
+        </a>
+        
+        {% if user.is_staff %}
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
+            <i class="fas fa-cog"></i>
+            Admin Panel
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+<!-- No Results -->
+<div class="content-section" data-aos="fade-up">
+    <div class="card" style="text-align: center; padding: var(--space-3xl);">
+        <i class="fas fa-search" style="font-size: 3rem; color: var(--gray-400); margin-bottom: var(--space-lg);"></i>
+        <h3 style="color: var(--gray-600); margin-bottom: var(--space-sm);">No Issue Found</h3>
+        <p style="color: var(--gray-500); margin-bottom: var(--space-xl);">No issue found with reference number: <strong>{{ request.GET.ref|default:"your search" }}</strong></p>
+        <div style="background: var(--gray-50); padding: var(--space-lg); border-radius: var(--radius-lg); margin-bottom: var(--space-xl);">
+            <h4 style="color: var(--gray-700); margin-bottom: var(--space-md);">Search Tips:</h4>
+            <ul style="text-align: left; color: var(--gray-600); line-height: 1.6;">
+                <li>Reference numbers are typically in format: MUN-2026-XXXXX</li>
+                <li>Check your email confirmation for the correct reference number</li>
+                <li>Contact support if you continue to have issues</li>
+            </ul>
+        </div>
+        <div style="display: flex; gap: var(--space-lg); justify-content: center;">
+            <a href="{% url 'track_issue' %}" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+                Try Again
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

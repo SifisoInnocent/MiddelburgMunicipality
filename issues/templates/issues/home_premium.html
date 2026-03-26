@@ -1,0 +1,147 @@
+{% extends 'issues/base_premium.html' %}
+
+{% block title %}Home - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<div class="premium-content">
+    <!-- Hero Section -->
+    <div class="premium-card" style="text-align: center; padding: 4rem 2rem; background: var(--gradient); color: white;">
+        <h1 style="font-size: 3rem; margin-bottom: 1rem;">
+            <i class="fas fa-city"></i> Middelburg Municipality
+        </h1>
+        <h2 style="font-size: 1.5rem; margin-bottom: 2rem; font-weight: 400;">
+            Community Service Portal
+        </h2>
+        <p style="font-size: 1.1rem; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Your voice matters! Report community issues, track service requests, and help make Middelburg a better place for everyone.
+        </p>
+        
+        {% if user.is_authenticated %}
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'dashboard' %}" class="btn-premium" style="background: white; color: var(--primary);">
+                    <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                </a>
+                <a href="{% url 'report_issue' %}" class="btn-premium">
+                    <i class="fas fa-plus-circle"></i> Report Issue
+                </a>
+            </div>
+        {% else %}
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'register' %}" class="btn-premium" style="background: white; color: var(--primary);">
+                    <i class="fas fa-user-plus"></i> Get Started
+                </a>
+                <a href="{% url 'login' %}" class="btn-premium">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Features Section -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+        <div class="premium-card" style="text-align: center;">
+            <i class="fas fa-exclamation-triangle fa-3x" style="color: var(--warning); margin-bottom: 1.5rem;"></i>
+            <h3 style="color: var(--dark); margin-bottom: 1rem;">Report Issues</h3>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                Quickly report community issues like potholes, street lights, waste collection, and more.
+            </p>
+            <a href="{% url 'report_issue' %}" class="btn-premium">
+                <i class="fas fa-plus-circle"></i> Report Now
+            </a>
+        </div>
+
+        <div class="premium-card" style="text-align: center;">
+            <i class="fas fa-search fa-3x" style="color: var(--accent); margin-bottom: 1.5rem;"></i>
+            <h3 style="color: var(--dark); margin-bottom: 1rem;">Track Progress</h3>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                Monitor the status of your reported issues and get updates on municipal service responses.
+            </p>
+            <a href="{% url 'track_issue' %}" class="btn-premium">
+                <i class="fas fa-search"></i> Track Issue
+            </a>
+        </div>
+
+        <div class="premium-card" style="text-align: center;">
+            <i class="fas fa-chart-line fa-3x" style="color: var(--success); margin-bottom: 1.5rem;"></i>
+            <h3 style="color: var(--dark); margin-bottom: 1rem;">View Statistics</h3>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                See community impact through comprehensive statistics and service delivery metrics.
+            </p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-premium">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-premium">
+                    <i class="fas fa-sign-in-alt"></i> Login to View
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-clock"></i> Recent Community Activity
+        </h2>
+        <div style="display: grid; gap: 1rem;">
+            <div style="padding: 1rem; background: #f8fafc; border-radius: 10px; border-left: 4px solid var(--success);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: var(--dark); margin-bottom: 0.25rem;">Street Light Fixed</h4>
+                        <p style="color: #6b7280; margin: 0;">Main Street lighting issue resolved</p>
+                    </div>
+                    <span style="color: #6b7280; font-size: 0.8rem;">2 hours ago</span>
+                </div>
+            </div>
+            
+            <div style="padding: 1rem; background: #f8fafc; border-radius: 10px; border-left: 4px solid var(--accent);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: var(--dark); margin-bottom: 0.25rem;">Pothole Repair Scheduled</h4>
+                        <p style="color: #6b7280; margin: 0;">Oak Street road maintenance planned</p>
+                    </div>
+                    <span style="color: #6b7280; font-size: 0.8rem;">5 hours ago</span>
+                </div>
+            </div>
+            
+            <div style="padding: 1rem; background: #f8fafc; border-radius: 10px; border-left: 4px solid var(--warning);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: var(--dark); margin-bottom: 0.25rem;">Waste Collection Delayed</h4>
+                        <p style="color: #6b7280; margin: 0;">Northern area collection rescheduled</p>
+                    </div>
+                    <span style="color: #6b7280; font-size: 0.8rem;">1 day ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="premium-card" style="text-align: center;">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-phone"></i> Need Help?
+        </h2>
+        <p style="color: #6b7280; margin-bottom: 2rem;">
+            Our municipal services team is here to assist you with any questions or concerns.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div>
+                <i class="fas fa-phone fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h4 style="color: var(--dark); margin-bottom: 0.5rem;">Emergency Hotline</h4>
+                <p style="color: #6b7280;">013 123 4567</p>
+            </div>
+            <div>
+                <i class="fas fa-envelope fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h4 style="color: var(--dark); margin-bottom: 0.5rem;">Email Support</h4>
+                <p style="color: #6b7280;">support@middelburg.gov.za</p>
+            </div>
+            <div>
+                <i class="fas fa-map-marker-alt fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h4 style="color: var(--dark); margin-bottom: 0.5rem;">Municipal Office</h4>
+                <p style="color: #6b7280;">123 Main Street, Middelburg</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

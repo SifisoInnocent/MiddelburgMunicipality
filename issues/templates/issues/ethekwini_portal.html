@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eThekwini Municipality Service Delivery Portal</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ethekwini-primary: #006633;
+            --ethekwini-secondary: #FF6B35;
+            --ethekwini-accent: #004D99;
+            --ethekwini-light: #F0F8FF;
+            --ethekwini-dark: #1A1A1A;
+            --ethekwini-gray: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--ethekwini-light) 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            color: var(--ethekwini-dark);
+        }
+
+        .portal-header {
+            background: var(--ethekwini-primary);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 102, 51, 0.3);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .municipality-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .municipality-logo i {
+            font-size: 3rem;
+            color: var(--ethekwini-secondary);
+        }
+
+        .municipality-title {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .municipality-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .portal-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--ethekwini-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--ethekwini-light);
+            color: var(--ethekwini-primary);
+            border-bottom-color: var(--ethekwini-secondary);
+        }
+
+        .portal-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--ethekwini-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--ethekwini-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--ethekwini-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--ethekwini-gray);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .services-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--ethekwini-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--ethekwini-light);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            background: white;
+            border-color: var(--ethekwini-secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--ethekwini-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .service-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ethekwini-primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            color: var(--ethekwini-gray);
+            line-height: 1.6;
+        }
+
+        .recent-issues {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .issue-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--ethekwini-light);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .issue-item:hover {
+            background: #E8F4F8;
+            transform: translateX(5px);
+        }
+
+        .issue-info h4 {
+            color: var(--ethekwini-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-meta {
+            color: var(--ethekwini-gray);
+            font-size: 0.9rem;
+        }
+
+        .issue-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-progress {
+            background: #CCE5FF;
+            color: #004085;
+        }
+
+        .status-resolved {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .quick-actions {
+            background: var(--ethekwini-primary);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: white;
+            color: var(--ethekwini-primary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: var(--ethekwini-secondary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+            }
+            
+            .portal-content {
+                padding: 0 1rem;
+            }
+            
+            .services-section, .recent-issues {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-container">
+            <div class="municipality-logo">
+                <i class="fas fa-city"></i>
+                <div>
+                    <h1 class="municipality-title">eThekwini Municipality</h1>
+                    <p class="municipality-subtitle">Service Delivery Portal</p>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 0.9rem; opacity: 0.9;">Durban, KwaZulu-Natal</div>
+                <div style="font-size: 0.8rem; opacity: 0.7;">Working for you</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="portal-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-plus-circle"></i> Report Issue
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-search"></i> Track Service
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-bar"></i> Statistics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-phone"></i> Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="portal-content">
+        <!-- Statistics Dashboard -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-list-alt"></i>
+                </div>
+                <div class="stat-number">2,847</div>
+                <div class="stat-label">Total Requests</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">423</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="stat-number">892</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number">1,532</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="service-title">Roads & Infrastructure</h3>
+                    <p class="service-description">Report potholes, street maintenance, and infrastructure issues</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="service-title">Water Services</h3>
+                    <p class="service-description">Water leaks, supply issues, and water quality concerns</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="service-title">Electricity</h3>
+                    <p class="service-description">Power outages, electrical faults, and street lighting</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                    <h3 class="service-title">Waste Management</h3>
+                    <p class="service-description">Missed collections, illegal dumping, and waste services</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3 class="service-title">Parks & Recreation</h3>
+                    <p class="service-description">Park maintenance, facilities, and recreational services</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 class="service-title">Noise Control</h3>
+                    <p class="service-description">Noise complaints and disturbance reporting</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Issues -->
+        <section class="recent-issues">
+            <h2 class="section-title">Recent Service Requests</h2>
+            
+            <div class="issue-item">
+                <div class="issue-info">
+                    <h4>Water Leak - Main Street</h4>
+                    <div class="issue-meta">
+                        <i class="fas fa-map-marker-alt"></i> Durban Central • 
+                        <i class="fas fa-calendar"></i> 2 hours ago • 
+                        <i class="fas fa-user"></i> John Smith
+                    </div>
+                </div>
+                <span class="issue-status status-progress">In Progress</span>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-info">
+                    <h4>Street Light Outage - Umhlanga</h4>
+                    <div class="issue-meta">
+                        <i class="fas fa-map-marker-alt"></i> Umhlanga Ridge • 
+                        <i class="fas fa-calendar"></i> 5 hours ago • 
+                        <i class="fas fa-user"></i> Sarah Johnson
+                    </div>
+                </div>
+                <span class="issue-status status-resolved">Resolved</span>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-info">
+                    <h4>Pothole Repair - Florida Road</h4>
+                    <div class="issue-meta">
+                        <i class="fas fa-map-marker-alt"></i> Morningside • 
+                        <i class="fas fa-calendar"></i> 1 day ago • 
+                        <i class="fas fa-user"></i> Michael Brown
+                    </div>
+                </div>
+                <span class="issue-status status-pending">Pending</span>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-info">
+                    <h4>Waste Collection - Berea</h4>
+                    <div class="issue-meta">
+                        <i class="fas fa-map-marker-alt"></i> Berea • 
+                        <i class="fas fa-calendar"></i> 1 day ago • 
+                        <i class="fas fa-user"></i> Lisa Davis
+                    </div>
+                </div>
+                <span class="issue-status status-progress">In Progress</span>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <h2 class="section-title" style="color: white;">Quick Actions</h2>
+            <div class="actions-grid">
+                <a href="#" class="action-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Report Issue
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fas fa-search"></i>
+                    Track Request
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fas fa-phone"></i>
+                    Emergency
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fas fa-info-circle"></i>
+                    Help Center
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: var(--ethekwini-dark); color: white; text-align: center; padding: 2rem; margin-top: 3rem;">
+        <p>&copy; 2024 eThekwini Municipality. All rights reserved.</p>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">Working together for better service delivery</p>
+    </footer>
+</body>
+</html>

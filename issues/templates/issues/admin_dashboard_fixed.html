@@ -1,0 +1,202 @@
+{% extends 'issues/base.html' %}
+
+{% block title %}Admin Dashboard - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h2><i class="fas fa-shield-alt"></i> Admin Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <h4>Municipal Administration Panel</h4>
+                    <p class="text-muted">Manage and monitor all community service requests</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-list-alt fa-3x text-primary mb-3"></i>
+                    <h5>{{ stats.total }}</h5>
+                    <p class="text-muted">Total Issues</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                    <h5>{{ stats.submitted }}</h5>
+                    <p class="text-muted">Submitted</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-spinner fa-3x text-info mb-3"></i>
+                    <h5>{{ stats.in_progress }}</h5>
+                    <p class="text-muted">In Progress</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h5>{{ stats.resolved }}</h5>
+                    <p class="text-muted">Resolved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-tasks"></i> Issues Management</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Filter Form -->
+                    <form method="get" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input type="text" name="search" class="form-control" placeholder="Search issues..." value="{{ request.GET.search|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select name="status" class="form-control">
+                                    <option value="">All Status</option>
+                                    <option value="submitted" {% if request.GET.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                                    <option value="in_progress" {% if request.GET.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="resolved" {% if request.GET.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select name="category" class="form-control">
+                                    <option value="">All Categories</option>
+                                    <option value="roads" {% if request.GET.category == 'roads' %}selected{% endif %}>Roads</option>
+                                    <option value="water" {% if request.GET.category == 'water' %}selected{% endif %}>Water</option>
+                                    <option value="electricity" {% if request.GET.category == 'electricity' %}selected{% endif %}>Electricity</option>
+                                    <option value="waste" {% if request.GET.category == 'waste' %}selected{% endif %}>Waste</option>
+                                    <option value="parks" {% if request.GET.category == 'parks' %}selected{% endif %}>Parks</option>
+                                    <option value="noise" {% if request.GET.category == 'noise' %}selected{% endif %}>Noise</option>
+                                    <option value="other" {% if request.GET.category == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Issues Grid -->
+                    <div class="row">
+                        {% for issue in page_obj %}
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">{{ issue.title }}</h6>
+                                        <small class="text-muted">
+                                            <code>{{ issue.reference_number }}</code> • {{ issue.user.username }}
+                                        </small>
+                                    </div>
+                                    {% if issue.status == 'submitted' %}
+                                        <span class="badge badge-warning">{{ issue.get_status_display }}</span>
+                                    {% elif issue.status == 'in_progress' %}
+                                        <span class="badge badge-info">{{ issue.get_status_display }}</span>
+                                    {% elif issue.status == 'resolved' %}
+                                        <span class="badge badge-success">{{ issue.get_status_display }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block mb-1">
+                                            <i class="fas fa-tag"></i> {{ issue.get_category_display }}
+                                        </small>
+                                        <small class="text-muted d-block mb-1">
+                                            <i class="fas fa-map-marker-alt"></i> {{ issue.location }}
+                                        </small>
+                                        <small class="text-muted d-block mb-1">
+                                            <i class="fas fa-calendar"></i> {{ issue.created_at|date:"F d, Y H:i" }}
+                                        </small>
+                                    </div>
+                                    
+                                    <p class="text-muted small">{{ issue.description|truncatewords:20 }}</p>
+                                    
+                                    <!-- Status Update Form -->
+                                    <form method="post" action="{% url 'update_status' issue.id %}" class="mb-3">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <select name="status" class="form-control form-control-sm">
+                                                    <option value="submitted" {% if issue.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                                                    <option value="in_progress" {% if issue.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                                    <option value="resolved" {% if issue.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i> Update
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <textarea name="admin_notes" placeholder="Admin notes (optional)" class="form-control form-control-sm mt-2" rows="2">{{ issue.admin_notes|default:'' }}</textarea>
+                                    </form>
+                                    
+                                    <div class="btn-group w-100">
+                                        <a href="{% url 'track_issue_detail' issue.reference_number %}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <button class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-envelope"></i> Message
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if page_obj.has_other_pages %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                            </li>
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

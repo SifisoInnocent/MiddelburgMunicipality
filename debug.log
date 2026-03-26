@@ -1,0 +1,422 @@
+INFO 2026-03-24 17:21:22,684 autoreload 24416 37704 Watching for file changes with StatReloader
+INFO 2026-03-24 17:21:29,226 autoreload 24416 37704 C:\Users\Admin\Desktop\municipal-helpdesk\municipal_helpdesk\settings.py changed, reloading.
+INFO 2026-03-24 17:21:29,943 autoreload 25324 31620 Watching for file changes with StatReloader
+INFO 2026-03-24 17:21:38,349 autoreload 25324 31620 C:\Users\Admin\Desktop\municipal-helpdesk\municipal_helpdesk\settings.py changed, reloading.
+INFO 2026-03-24 17:21:39,108 autoreload 988 12700 Watching for file changes with StatReloader
+INFO 2026-03-24 17:22:03,095 autoreload 988 12700 C:\Users\Admin\Desktop\municipal-helpdesk\issues\models.py changed, reloading.
+INFO 2026-03-24 17:22:03,876 autoreload 23928 35216 Watching for file changes with StatReloader
+INFO 2026-03-24 17:22:36,045 autoreload 23928 35216 C:\Users\Admin\Desktop\municipal-helpdesk\accounts\models.py changed, reloading.
+INFO 2026-03-24 17:22:36,816 autoreload 22908 35880 Watching for file changes with StatReloader
+INFO 2026-03-24 17:23:08,968 autoreload 22908 35880 C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py changed, reloading.
+INFO 2026-03-24 17:23:09,772 autoreload 37552 20720 Watching for file changes with StatReloader
+INFO 2026-03-24 17:25:13,386 autoreload 32540 6180 Watching for file changes with StatReloader
+INFO 2026-03-24 17:25:33,307 autoreload 32540 6180 C:\Users\Admin\Desktop\municipal-helpdesk\municipal_helpdesk\settings.py changed, reloading.
+INFO 2026-03-24 17:25:34,193 autoreload 35232 23248 Watching for file changes with StatReloader
+INFO 2026-03-24 17:25:34,668 log 35232 20112 "GET / HTTP/1.1" 200 3441
+WARNING 2026-03-24 17:25:34,894 log 35232 20112 Not Found: /favicon.ico
+WARNING 2026-03-24 17:25:34,894 log 35232 20112 "GET /favicon.ico HTTP/1.1" 404 3341
+INFO 2026-03-24 17:25:37,035 log 35232 20112 "GET /report/ HTTP/1.1" 200 27161
+INFO 2026-03-24 17:25:39,045 log 35232 20112 "GET / HTTP/1.1" 200 3441
+INFO 2026-03-24 17:25:40,157 log 35232 20112 "GET /report/ HTTP/1.1" 200 27161
+INFO 2026-03-24 17:25:42,826 log 35232 20112 "GET /report/ HTTP/1.1" 200 27161
+INFO 2026-03-24 17:25:43,884 log 35232 20112 "GET / HTTP/1.1" 200 3441
+INFO 2026-03-24 17:25:44,925 log 35232 20112 "GET /report/ HTTP/1.1" 200 27161
+INFO 2026-03-24 17:25:52,963 log 35232 20112 "GET / HTTP/1.1" 200 3441
+INFO 2026-03-24 17:26:11,432 log 35232 20112 "GET / HTTP/1.1" 200 3441
+INFO 2026-03-24 17:26:17,520 log 35232 20112 "GET / HTTP/1.1" 200 3441
+INFO 2026-03-24 17:26:19,751 log 35232 20112 "GET /report/ HTTP/1.1" 200 27161
+ERROR 2026-03-24 17:26:45,653 log 35232 24840 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py", line 33, in dashboard
+    return render(request, 'issues/dashboard.html', context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'analytics' not found. 'analytics' is not a valid view function or pattern name.
+ERROR 2026-03-24 17:26:45,662 log 35232 24840 "GET / HTTP/1.1" 500 167226
+ERROR 2026-03-24 17:26:52,286 log 35232 24840 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py", line 33, in dashboard
+    return render(request, 'issues/dashboard.html', context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'analytics' not found. 'analytics' is not a valid view function or pattern name.
+ERROR 2026-03-24 17:26:52,291 log 35232 24840 "GET / HTTP/1.1" 500 167363
+ERROR 2026-03-24 17:26:53,387 log 35232 24840 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py", line 33, in dashboard
+    return render(request, 'issues/dashboard.html', context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'analytics' not found. 'analytics' is not a valid view function or pattern name.
+ERROR 2026-03-24 17:26:53,391 log 35232 24840 "GET / HTTP/1.1" 500 167363
+ERROR 2026-03-24 17:26:54,049 log 35232 24840 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py", line 33, in dashboard
+    return render(request, 'issues/dashboard.html', context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'analytics' not found. 'analytics' is not a valid view function or pattern name.
+ERROR 2026-03-24 17:26:54,055 log 35232 24840 "GET / HTTP/1.1" 500 167363
+INFO 2026-03-24 17:27:01,215 log 35232 24840 "GET /admin HTTP/1.1" 301 0
+INFO 2026-03-24 17:27:01,348 log 35232 24840 "GET /admin/ HTTP/1.1" 200 8154
+INFO 2026-03-24 17:27:01,612 log 35232 33316 "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 3538
+INFO 2026-03-24 17:27:01,630 log 35232 36760 "GET /static/admin/css/responsive.css HTTP/1.1" 200 16273
+INFO 2026-03-24 17:27:01,635 log 35232 37392 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2026-03-24 17:27:01,635 log 35232 24368 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2026-03-24 17:27:01,638 log 35232 24840 "GET /static/admin/css/base.css HTTP/1.1" 200 23100
+INFO 2026-03-24 17:27:01,648 log 35232 20820 "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2026-03-24 17:27:01,672 log 35232 24840 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2026-03-24 17:27:01,677 log 35232 20820 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 593
+INFO 2026-03-24 17:27:01,677 log 35232 24368 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 978
+ERROR 2026-03-24 17:27:13,445 log 35232 24368 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\issues\views.py", line 33, in dashboard
+    return render(request, 'issues/dashboard.html', context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 166, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\template\defaulttags.py", line 511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\urls\resolvers.py", line 842, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'analytics' not found. 'analytics' is not a valid view function or pattern name.
+ERROR 2026-03-24 17:27:13,450 log 35232 24368 "GET / HTTP/1.1" 500 167226
+ERROR 2026-03-24 17:27:22,213 log 35232 24368 Internal Server Error: /admin/accounts/userprofile/
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: accounts_userprofile
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\options.py", line 710, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\sites.py", line 247, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\options.py", line 1982, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\options.py", line 857, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 143, in __init__
+    self.get_results(request)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 300, in get_results
+    result_count = paginator.count
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\core\paginator.py", line 189, in count
+    return c()
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Admin\Desktop\municipal-helpdesk\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: accounts_userprofile
+ERROR 2026-03-24 17:27:22,222 log 35232 24368 "GET /admin/accounts/userprofile/ HTTP/1.1" 500 201809

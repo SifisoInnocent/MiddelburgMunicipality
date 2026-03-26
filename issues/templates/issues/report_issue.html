@@ -1,0 +1,945 @@
+{% extends 'issues/base_premium_new.html' %}
+
+{% block title %}Report Issue - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<div class="content-section" data-aos="fade-up">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="fas fa-hands-helping"></i>
+            Report Community Issue
+        </h1>
+        <div class="section-actions">
+            <span class="badge badge-info">New Report</span>
+        </div>
+    </div>
+    
+    <p style="color: var(--gray-600); margin-bottom: var(--space-2xl);">
+        Help us improve our community by reporting issues. Your voice matters and contributes to better service delivery.
+    </p>
+</div>
+
+<!-- Report Form -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="100">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-edit"></i>
+            Issue Details
+        </h2>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="card" style="background: var(--error-light); border: 1px solid var(--error); margin-bottom: var(--space-xl);">
+                <div style="color: var(--error); font-weight: 600; margin-bottom: var(--space-sm);">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Please correct the following errors:
+                </div>
+                {% for field, errors in form.non_field_errors.items %}
+                    <div style="color: var(--error); font-size: 0.9rem; margin-bottom: var(--space-xs);">
+                        <strong>{{ field|title }}:</strong> {{ errors|join:", " }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+            <div>
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">
+                        <i class="fas fa-heading"></i>
+                        Issue Title
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                            {{ form.title.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.category.id_for_label }}" class="form-label">
+                        <i class="fas fa-tag"></i>
+                        Category
+                    </label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                            {{ form.category.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <div class="form-group">
+                    <label for="{{ form.location.id_for_label }}" class="form-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Location
+                    </label>
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                        <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                            {{ form.location.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.priority.id_for_label }}" class="form-label">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Priority
+                    </label>
+                    {{ form.priority }}
+                    {% if form.priority.errors %}
+                        <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                            {{ form.priority.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}" class="form-label">
+                <i class="fas fa-align-left"></i>
+                Description
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                    {{ form.description.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="image-upload" class="form-label">
+                <i class="fas fa-camera"></i>
+                Image Attachment (Optional)
+            </label>
+            <div style="position: relative;">
+                <input type="file" 
+                       id="image-upload" 
+                       name="image" 
+                       accept="image/*"
+                       style="display: none;"
+                       onchange="updateFileName(this); previewImage(this)">
+                <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                    <button type="button" 
+                            onclick="document.getElementById('image-upload').click()" 
+                            class="btn btn-secondary"
+                            style="display: flex; align-items: center; gap: var(--space-sm); background: linear-gradient(135deg, var(--gray-600) 0%, var(--gray-700) 100%); color: white; padding: var(--space-sm) var(--space-lg); border: none; border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
+                        <i class="fas fa-upload"></i>
+                        Choose Image
+                    </button>
+                    <span id="file-name" style="color: var(--gray-600); font-size: 0.9rem;">No file selected</span>
+                </div>
+                
+                <!-- Fallback file input -->
+                <div style="margin-top: var(--space-sm);">
+                    <small style="color: var(--gray-500);">Or choose file directly:</small><br>
+                    {{ form.image }}
+                </div>
+                
+                <!-- Image Preview -->
+                <div id="image-preview" style="display: none; margin-top: var(--space-md);">
+                    <div style="color: var(--gray-500); font-size: 0.85rem; margin-bottom: var(--space-sm);">Preview:</div>
+                    <img id="preview-img" src="" alt="Image preview" style="max-width: 100%; max-height: 200px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                    <button type="button" 
+                            onclick="clearImage()" 
+                            class="btn btn-secondary"
+                            style="margin-top: var(--space-sm); font-size: 0.8rem;">
+                        <i class="fas fa-times"></i>
+                        Remove Image
+                    </button>
+                </div>
+                
+                {% if form.image.errors %}
+                    <div style="color: var(--error); font-size: 0.85rem; margin-top: var(--space-xs);">
+                        {{ form.image.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+            <div style="color: var(--gray-500); font-size: 0.85rem; margin-top: var(--space-xs);">
+                <i class="fas fa-info-circle"></i>
+                Upload photos related to the issue (max 10MB)
+            </div>
+        </div>
+        
+        <script>
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file selected';
+            document.getElementById('file-name').textContent = fileName;
+        }
+        
+        function previewImage(input) {
+            const file = input.files[0];
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                previewImg.src = '';
+            }
+        }
+        
+        function clearImage() {
+            const input = document.getElementById('image-upload');
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            
+            input.value = '';
+            preview.style.display = 'none';
+            previewImg.src = '';
+            document.getElementById('file-name').textContent = 'No file selected';
+        }
+        </script>
+        
+        <div style="display: flex; gap: var(--space-lg); margin-top: var(--space-2xl);">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <i class="fas fa-paper-plane"></i>
+                Submit Issue Report
+            </button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Recent Reports -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="200">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-history"></i>
+            Recent Community Reports
+        </h2>
+        <div class="section-actions">
+            <a href="{% url 'track_issue' %}" class="btn btn-secondary">
+                <i class="fas fa-eye"></i>
+                View All Reports
+            </a>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Water Leak</h3>
+                <span class="badge badge-warning">In Progress</span>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600); margin-bottom: var(--space-md);">
+                    Major water leak reported on Main Street affecting multiple properties.
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Springfield Area
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-calendar"></i>
+                        2 days ago
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Street Light Outage</h3>
+                <span class="badge badge-success">Resolved</span>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600); margin-bottom: var(--space-md);">
+                    Multiple street lights not functioning in residential area.
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Central District
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-calendar"></i>
+                        1 week ago
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Waste Collection</h3>
+                <span class="badge badge-info">Submitted</span>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600); margin-bottom: var(--space-md);">
+                    Missed waste collection for two consecutive weeks.
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Umhlanga
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--gray-500);">
+                        <i class="fas fa-calendar"></i>
+                        3 days ago
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Guidelines -->
+<div class="content-section" data-aos="fade-up" data-aos-delay="300">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Reporting Guidelines
+        </h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-lg);">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-camera" style="color: var(--primary);"></i>
+                    Photo Evidence
+                </h3>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600);">
+                    Always include clear photos of the issue. Multiple angles help our team assess the situation faster.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-map-pin" style="color: var(--primary);"></i>
+                    Precise Location
+                </h3>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600);">
+                    Provide exact location details including street names, landmarks, or GPS coordinates if possible.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clock" style="color: var(--primary);"></i>
+                    Timely Reporting
+                </h3>
+            </div>
+            <div class="card-content">
+                <p style="color: var(--gray-600);">
+                    Report issues as soon as they occur. This helps us prioritize and respond more effectively.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-th-large"></i>
+                Select Issue Category
+            </h2>
+        </div>
+        <div class="categories-grid">
+            <div onclick="selectCategory('roads')" class="category-card" data-category="roads">
+                <div class="category-icon">
+                    <i class="fas fa-road"></i>
+                </div>
+                <div class="category-title">Road Issues</div>
+                <div class="category-description">Potholes, street lights, signs</div>
+            </div>
+            <div onclick="selectCategory('water')" class="category-card" data-category="water">
+                <div class="category-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="category-title">Water Issues</div>
+                <div class="category-description">Leaks, pressure, quality</div>
+            </div>
+            <div onclick="selectCategory('electricity')" class="category-card" data-category="electricity">
+                <div class="category-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="category-title">Electricity</div>
+                <div class="category-description">Outages, wiring, meters</div>
+            </div>
+            <div onclick="selectCategory('waste')" class="category-card" data-category="waste">
+                <div class="category-icon">
+                    <i class="fas fa-trash"></i>
+                </div>
+                <div class="category-title">Waste Management</div>
+                <div class="category-description">Collection, dumping, recycling</div>
+            </div>
+            <div onclick="selectCategory('other')" class="category-card" data-category="other">
+                <div class="category-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="category-title">Other Issues</div>
+                <div class="category-description">General community problems</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Form -->
+    <div class="form-section">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-edit"></i>
+                Issue Details
+            </h2>
+        </div>
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data" class="report-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Issue Title</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-heading input-icon"></i>
+                        <input type="text" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}" 
+                               class="form-control" placeholder="Brief description of the issue" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.category.id_for_label }}">Category</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-folder input-icon"></i>
+                            <select id="{{ form.category.id_for_label }}" name="{{ form.category.name }}" class="form-control" required>
+                                <option value="">Select a category</option>
+                                <option value="roads">Road Issues</option>
+                                <option value="water">Water Issues</option>
+                                <option value="electricity">Electricity</option>
+                                <option value="waste">Waste Management</option>
+                                <option value="other">Other Issues</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.location.id_for_label }}">Location</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-marker-alt input-icon"></i>
+                            <input type="text" id="{{ form.location.id_for_label }}" name="{{ form.location.name }}" 
+                                   class="form-control" placeholder="Where is this issue located?" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-align-left input-icon"></i>
+                        <textarea id="{{ form.description.id_for_label }}" name="{{ form.description.name }}" 
+                                  class="form-control" rows="5" placeholder="Provide detailed information about the issue" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.image.id_for_label }}">Photo (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="{{ form.image.id_for_label }}" name="{{ form.image.name }}" 
+                               class="form-control" accept="image/*">
+                        <div class="file-upload-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Choose Photo</span>
+                        </div>
+                    </div>
+                    <small class="file-hint">Upload a photo to help us identify the issue faster (max 5MB)</small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    {% if messages %}
+        <div class="success-message">
+            {% for message in messages %}
+                <div class="message-content">
+                    <i class="fas fa-check-circle"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function selectCategory(category) {
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('selected');
+    document.querySelector('select[name="category"]').value = category;
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #60a5fa;
+    --secondary: #7c3aed;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --dark: #1f2937;
+    --gray: #6b7280;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Slideshow Container - SAME AS LOGIN */
+.slideshow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.fade {
+    animation: fadeEffect 25s infinite;
+}
+
+@keyframes fadeEffect {
+    0%, 100% { opacity: 0; }
+    8%, 24% { opacity: 1; }
+    28%, 100% { opacity: 0; }
+}
+
+.slide:nth-child(1) { animation-delay: 0s; }
+.slide:nth-child(2) { animation-delay: 5s; }
+.slide:nth-child(3) { animation-delay: 10s; }
+.slide:nth-child(4) { animation-delay: 15s; }
+.slide:nth-child(5) { animation-delay: 20s; }
+
+/* Overlay - SAME AS LOGIN */
+.report-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+.report-container {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header Section */
+.report-header {
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--gradient-primary);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+/* Category Section */
+.category-section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--primary);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.category-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid transparent;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.category-card.selected {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.category-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    margin: 0 auto 0.75rem;
+}
+
+.category-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+}
+
+.category-description {
+    font-size: 0.7rem;
+    color: var(--gray);
+}
+
+/* Form Section */
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-container {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.report-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+/* File Upload */
+.file-upload {
+    position: relative;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 2px dashed #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.file-upload-label i {
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.file-hint {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--gray);
+    margin-top: 0.25rem;
+}
+
+/* Form Actions */
+.form-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.btn-submit {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Success Message */
+.success-message {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.message-content {
+    background: var(--gradient-success);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.message-content i {
+    font-size: 1rem;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .report-container {
+        padding: 1rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .header-content {
+        padding: 1.5rem;
+    }
+    
+    .form-container {
+        padding: 1.5rem;
+    }
+    
+    .page-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+    
+    .success-message {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
+}
+</style>
+{% endblock %}

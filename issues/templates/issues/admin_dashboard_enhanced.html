@@ -1,0 +1,193 @@
+{% extends 'issues/base_premium.html' %}
+
+{% block title %}Admin Dashboard - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<div class="premium-content">
+    <!-- Admin Header -->
+    <div class="premium-card" style="text-align: center;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--warning); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem;">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+        </div>
+        <h1 style="color: var(--dark); margin-bottom: 1rem;">
+            <i class="fas fa-cog"></i> Municipal Administration
+        </h1>
+        <p style="color: #6b7280;">Manage and monitor all community service requests</p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-chart-line"></i> Service Statistics
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                <i class="fas fa-list-alt fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;">{{ stats.total }}</h3>
+                <p style="color: #6b7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Total Issues</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                <i class="fas fa-clock fa-2x" style="color: var(--warning); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; color: var(--warning); margin-bottom: 0.5rem;">{{ stats.submitted }}</h3>
+                <p style="color: #6b7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Submitted</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                <i class="fas fa-spinner fa-2x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;">{{ stats.in_progress }}</h3>
+                <p style="color: #6b7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">In Progress</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 1.5rem; border-radius: 15px; text-align: center;">
+                <i class="fas fa-check-circle fa-2x" style="color: var(--success); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; color: var(--success); margin-bottom: 0.5rem;">{{ stats.resolved }}</h3>
+                <p style="color: #6b7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Resolved</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issues Management -->
+    <div class="premium-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="color: var(--dark);">
+                <i class="fas fa-tasks"></i> Issues Management
+            </h2>
+            
+            <form method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.9rem;"></i>
+                    <input type="text" 
+                           name="search" 
+                           style="padding: 0.5rem 1rem 0.5rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; width: 200px;"
+                           placeholder="Search issues..."
+                           value="{{ request.GET.search|default:'' }}">
+                </div>
+                
+                <select name="status" style="padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem;">
+                    <option value="">All Status</option>
+                    <option value="submitted" {% if request.GET.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                    <option value="in_progress" {% if request.GET.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="resolved" {% if request.GET.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                </select>
+                
+                <select name="category" style="padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem;">
+                    <option value="">All Categories</option>
+                    <option value="roads" {% if request.GET.category == 'roads' %}selected{% endif %}>Roads</option>
+                    <option value="water" {% if request.GET.category == 'water' %}selected{% endif %}>Water</option>
+                    <option value="electricity" {% if request.GET.category == 'electricity' %}selected{% endif %}>Electricity</option>
+                    <option value="waste" {% if request.GET.category == 'waste' %}selected{% endif %}>Waste</option>
+                    <option value="parks" {% if request.GET.category == 'parks' %}selected{% endif %}>Parks</option>
+                    <option value="noise" {% if request.GET.category == 'noise' %}selected{% endif %}>Noise</option>
+                    <option value="other" {% if request.GET.category == 'other' %}selected{% endif %}>Other</option>
+                </select>
+                
+                <button type="submit" class="btn-premium">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </form>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+            {% for issue in page_obj %}
+            <div style="background: #f8fafc; padding: 2rem; border-radius: 15px;">
+                <!-- Issue Header -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; gap: 1rem;">
+                    <div>
+                        <h3 style="color: var(--dark); margin-bottom: 0.5rem; font-size: 1.1rem;">{{ issue.title }}</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                            <div style="font-family: monospace; font-size: 0.8rem; color: var(--primary); font-weight: 600;">{{ issue.reference_number }}</div>
+                            <div style="font-size: 0.75rem; color: #6b7280;">{{ issue.user.username }}</div>
+                        </div>
+                    </div>
+                    
+                    {% if issue.status == 'submitted' %}
+                        <span style="background: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            {{ issue.get_status_display }}
+                        </span>
+                    {% elif issue.status == 'in_progress' %}
+                        <span style="background: var(--accent); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            {{ issue.get_status_display }}
+                        </span>
+                    {% elif issue.status == 'resolved' %}
+                        <span style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            {{ issue.get_status_display }}
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <!-- Issue Details -->
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                        <i class="fas fa-tag" style="color: var(--primary); width: 16px; font-size: 0.7rem;"></i>
+                        {{ issue.get_category_display }}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--primary); width: 16px; font-size: 0.7rem;"></i>
+                        {{ issue.location }}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                        <i class="fas fa-calendar" style="color: var(--primary); width: 16px; font-size: 0.7rem;"></i>
+                        {{ issue.created_at|date:"F d, Y H:i" }}
+                    </div>
+                </div>
+                
+                <!-- Issue Description -->
+                <div style="margin-bottom: 1.5rem;">
+                    <p style="color: #6b7280; font-size: 0.85rem; line-height: 1.4;">{{ issue.description|truncatewords:30 }}</p>
+                </div>
+                
+                <!-- Issue Actions -->
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <form method="post" action="{% url 'update_status' issue.id %}" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        {% csrf_token %}
+                        <select name="status" style="padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; font-family: inherit;">
+                            <option value="submitted" {% if issue.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                            <option value="in_progress" {% if issue.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                            <option value="resolved" {% if issue.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                        </select>
+                        
+                        <textarea name="admin_notes" placeholder="Admin notes (optional)" style="padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; font-family: inherit; min-height: 60px; resize: vertical;">{{ issue.admin_notes|default:'' }}</textarea>
+                        
+                        <button type="submit" class="btn-premium" style="background: var(--success);">
+                            <i class="fas fa-check"></i> Update Status
+                        </button>
+                    </form>
+                    
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'track_issue_detail' issue.reference_number %}" class="btn-premium" style="flex: 1; padding: 0.4rem 0.5rem; font-size: 0.75rem;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                        <button class="btn-premium" style="flex: 1; padding: 0.4rem 0.5rem; font-size: 0.75rem; background: var(--warning);">
+                            <i class="fas fa-envelope"></i> Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2rem; background: #f8fafc; padding: 1rem; border-radius: 15px;">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="btn-premium">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% endif %}
+            
+            <span style="padding: 0.5rem 1rem; background: white; border-radius: 20px; font-weight: 500; font-size: 0.8rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="btn-premium">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

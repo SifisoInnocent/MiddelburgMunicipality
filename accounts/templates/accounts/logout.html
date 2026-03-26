@@ -1,0 +1,70 @@
+{% extends 'issues/base_enhanced.html' %}
+
+{% block title %}Logged Out - Municipal Helpdesk{% endblock %}
+
+{% block content %}
+<div class="content-wrapper fade-in" style="text-align: center; max-width: 600px; margin: 0 auto;">
+    <div style="margin-bottom: 3rem;">
+        <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 style="font-size: 2rem; font-weight: 700; color: var(--dark-color); margin-bottom: 0.5rem;">
+            Successfully Logged Out! 👋
+        </h1>
+        <p style="color: var(--secondary-color); font-size: 1.1rem;">Thank you for using the Municipal Helpdesk system.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 style="margin-bottom: 1rem; color: var(--primary-color);">
+                <i class="fas fa-info-circle"></i> What's Next?
+            </h3>
+            <p style="color: var(--secondary-color); margin-bottom: 2rem;">
+                You have been successfully logged out. You can now log in again or create a new account.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="{% url 'login' %}" class="btn btn-primary" style="text-decoration: none; justify-content: center;">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login Again
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-success" style="text-decoration: none; justify-content: center;">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; color: var(--secondary-color);">
+        <p style="font-size: 0.9rem;">
+            <i class="fas fa-clock"></i> You will be redirected to the login page in <span id="countdown">5</span> seconds...
+        </p>
+    </div>
+</div>
+
+<script>
+// Auto-redirect to login page after 5 seconds
+let countdown = 5;
+const countdownElement = document.getElementById('countdown');
+
+const timer = setInterval(() => {
+    countdown--;
+    countdownElement.textContent = countdown;
+    
+    if (countdown <= 0) {
+        clearInterval(timer);
+        window.location.href = "{% url 'login' %}";
+    }
+}, 1000);
+
+// Cancel redirect on user interaction
+document.addEventListener('click', () => {
+    clearInterval(timer);
+});
+
+document.addEventListener('keypress', () => {
+    clearInterval(timer);
+});
+</script>
+{% endblock %}

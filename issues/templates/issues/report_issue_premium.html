@@ -1,0 +1,225 @@
+{% extends 'issues/base_premium.html' %}
+
+{% block title %}Report Issue - Middelburg Municipality Helpdesk{% endblock %}
+
+{% block content %}
+<div class="premium-content">
+    <!-- Header Section -->
+    <div class="premium-card" style="text-align: center;">
+        <h1 style="color: var(--dark); margin-bottom: 1rem;">
+            <i class="fas fa-hands-helping"></i> Report Community Issue
+        </h1>
+        <p style="color: #6b7280; margin-bottom: 2rem;">
+            Help us improve our community by reporting issues. Your voice matters!
+        </p>
+    </div>
+
+    <!-- Report Form -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-edit"></i> Issue Details
+        </h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {% for field, errors in form.non_field_errors.items %}
+                        <strong>{{ field|title }}:</strong> {{ errors|join:", " }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="{{ form.title.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                            <i class="fas fa-heading"></i> Issue Title
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                                {{ form.title.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="{{ form.category.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                            <i class="fas fa-tag"></i> Category
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                                {{ form.category.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="{{ form.location.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                            <i class="fas fa-map-marker-alt"></i> Location
+                        </label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                                {{ form.location.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="{{ form.priority.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                            <i class="fas fa-exclamation-triangle"></i> Priority
+                        </label>
+                        {{ form.priority }}
+                        {% if form.priority.errors %}
+                            <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                                {{ form.priority.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="{{ form.description.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                    <i class="fas fa-align-left"></i> Description
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                        {{ form.description.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <label for="{{ form.attachment.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                    <i class="fas fa-camera"></i> Attachment (Optional)
+                </label>
+                {{ form.attachment }}
+                {% if form.attachment.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                        {{ form.attachment.errors|join:", " }}
+                    </div>
+                {% endif %}
+                <p style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">
+                    <i class="fas fa-info-circle"></i> Upload photos, videos, or documents related to the issue (max 10MB)
+                </p>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn-premium" style="flex: 1;">
+                    <i class="fas fa-paper-plane"></i> Submit Issue Report
+                </button>
+                <a href="{% url 'dashboard' %}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="premium-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2 style="color: var(--dark);">
+                <i class="fas fa-history"></i> Recent Community Reports
+            </h2>
+            <a href="{% url 'track_issue' %}" class="btn-premium">
+                <i class="fas fa-eye"></i> View All Reports
+            </a>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--dark); margin: 0;">Water Leak</h3>
+                    <span style="background: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">In Progress</span>
+                </div>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Major water leak reported on Main Street affecting multiple properties.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #6b7280;">
+                    <span><i class="fas fa-map-marker-alt"></i> Springfield Area</span>
+                    <span><i class="fas fa-calendar"></i> 2 days ago</span>
+                </div>
+            </div>
+            
+            <div style="padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--dark); margin: 0;">Street Light Outage</h3>
+                    <span style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Resolved</span>
+                </div>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Multiple street lights not functioning in residential area.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #6b7280;">
+                    <span><i class="fas fa-map-marker-alt"></i> Central District</span>
+                    <span><i class="fas fa-calendar"></i> 1 week ago</span>
+                </div>
+            </div>
+            
+            <div style="padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--dark); margin: 0;">Waste Collection</h3>
+                    <span style="background: var(--accent); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Submitted</span>
+                </div>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Missed waste collection for two consecutive weeks.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #6b7280;">
+                    <span><i class="fas fa-map-marker-alt"></i> Umhlanga</span>
+                    <span><i class="fas fa-calendar"></i> 3 days ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guidelines -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-info-circle"></i> Reporting Guidelines
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="text-align: center;">
+                <i class="fas fa-camera fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Photo Evidence</h3>
+                <p style="color: #6b7280;">Always include clear photos of the issue. Multiple angles help our team assess the situation faster.</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <i class="fas fa-map-pin fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Precise Location</h3>
+                <p style="color: #6b7280;">Provide exact location details including street names, landmarks, or GPS coordinates if possible.</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <i class="fas fa-clock fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Timely Reporting</h3>
+                <p style="color: #6b7280;">Report issues as soon as they occur. This helps us prioritize and respond more effectively.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+input[type="text"], input[type="file"], select, textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+</style>
+{% endblock %}
