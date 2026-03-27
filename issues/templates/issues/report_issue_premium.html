@@ -99,17 +99,53 @@
             </div>
             
             <div style="margin-bottom: 2rem;">
-                <label for="{{ form.attachment.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
-                    <i class="fas fa-camera"></i> Attachment (Optional)
+                <label for="image-upload" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark);">
+                    <i class="fas fa-camera"></i> Image Attachment (Optional)
                 </label>
-                {{ form.attachment }}
-                {% if form.attachment.errors %}
+                
+                <input type="file" 
+                       id="image-upload" 
+                       name="image" 
+                       accept="image/*"
+                       style="display: none;"
+                       onchange="updateFileName(this); previewImage(this)">
+                
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <button type="button" 
+                            onclick="document.getElementById('image-upload').click()" 
+                            class="btn-premium"
+                            style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); padding: 0.75rem 1.5rem;">
+                        <i class="fas fa-upload"></i> Choose Image
+                    </button>
+                    <span id="file-name" style="color: #6b7280; font-size: 0.9rem;">No file selected</span>
+                </div>
+                
+                <!-- Image Preview -->
+                <div id="image-preview" style="display: none; margin-top: 1rem;">
+                    <div style="color: #6b7280; font-size: 0.85rem; margin-bottom: 0.5rem;">Preview:</div>
+                    <img id="preview-img" src="" alt="Image preview" style="max-width: 100%; max-height: 200px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <button type="button" 
+                            onclick="clearImage()" 
+                            class="btn-premium"
+                            style="background: transparent; color: var(--danger); border: 2px solid var(--danger); margin-top: 0.5rem; font-size: 0.8rem; padding: 0.5rem 1rem;">
+                        <i class="fas fa-times"></i> Remove Image
+                    </button>
+                </div>
+                
+                <!-- Fallback file input -->
+                <div style="margin-top: 1rem;">
+                    <small style="color: #6b7280;">Or choose file directly:</small><br>
+                    {{ form.image }}
+                </div>
+                
+                {% if form.image.errors %}
                     <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
-                        {{ form.attachment.errors|join:", " }}
+                        {{ form.image.errors|join:", " }}
                     </div>
                 {% endif %}
-                <p style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">
-                    <i class="fas fa-info-circle"></i> Upload photos, videos, or documents related to the issue (max 10MB)
+                
+                <p style="color: #6b7280; font-size: 0.85rem; margin-top: 1rem;">
+                    <i class="fas fa-info-circle"></i> Upload photos related to the issue (max 10MB)
                 </p>
             </div>
             
@@ -222,4 +258,45 @@ textarea {
     resize: vertical;
 }
 </style>
+
+<script>
+function updateFileName(input) {
+    const fileName = input.files[0]?.name || 'No file selected';
+    document.getElementById('file-name').textContent = fileName;
+}
+
+function previewImage(input) {
+    const preview = document.getElementById('image-preview');
+    const previewImg = document.getElementById('preview-img');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+            previewImg.src = '';
+        }
+    } else {
+        preview.style.display = 'none';
+        previewImg.src = '';
+    }
+}
+
+function clearImage() {
+    const input = document.getElementById('image-upload');
+    const preview = document.getElementById('image-preview');
+    const previewImg = document.getElementById('preview-img');
+    
+    input.value = '';
+    preview.style.display = 'none';
+    previewImg.src = '';
+    document.getElementById('file-name').textContent = 'No file selected';
+}
+</script>
 {% endblock %}

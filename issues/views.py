@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django import forms
 import csv
 from datetime import datetime
-from .models import Issue
+from .models import Issue, Feedback
 from accounts.models import UserProfile
 
 def is_admin(user):
@@ -76,12 +76,18 @@ def dashboard(request):
         
         return response
     
+    # Calculate statistics
     stats = {
         'total': user_issues.count(),
         'submitted': user_issues.filter(status='submitted').count(),
         'in_progress': user_issues.filter(status='in_progress').count(),
         'resolved': user_issues.filter(status='resolved').count(),
     }
+    
+    # Calculate feedback statistics
+    feedback_count = 0
+    for issue in user_issues:
+        feedback_count += issue.feedback.count()
     
     paginator = Paginator(user_issues, 12)
     page_number = request.GET.get('page')
@@ -90,6 +96,7 @@ def dashboard(request):
     context = {
         'page_obj': page_obj,
         'stats': stats,
+        'feedback_count': feedback_count,
         'user': request.user,
         'today': datetime.now().date(),
     }
@@ -141,10 +148,14 @@ def track_issue_detail(request, reference_number):
     status_steps = ['submitted', 'in_progress', 'resolved']
     current_index = status_steps.index(issue.status)
     
+    # Get feedback for this issue
+    feedback_list = issue.feedback.all()
+    
     context = {
         'issue': issue,
         'status_steps': status_steps,
         'current_index': current_index,
+        'feedback_list': feedback_list,
     }
     return render(request, 'issues/track_issue.html', context)
 
@@ -212,5 +223,25 @@ def update_issue_status(request, issue_id):
             messages.success(request, f'Issue {issue.reference_number} status updated to {new_status}')
         else:
             messages.error(request, 'Invalid status')
+    
+    return redirect('admin_dashboard')
+
+@login_required
+@user_passes_test(is_admin)
+def add_feedback(request, issue_id):
+    """Add feedback to an issue - admin only"""
+    if request.method == 'POST':
+        issue = get_object_or_404(Issue, id=issue_id)
+        feedback_message = request.POST.get('feedback_message', '')
+        
+        if feedback_message.strip():
+            Feedback.objects.create(
+                issue=issue,
+                admin=request.user,
+                message=feedback_message
+            )
+            messages.success(request, f'Feedback added to issue {issue.reference_number}')
+        else:
+            messages.error(request, 'Feedback message cannot be empty')
     
     return redirect('admin_dashboard')

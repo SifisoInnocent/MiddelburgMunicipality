@@ -120,6 +120,30 @@
                         </a>
                     </div>
                     {% endif %}
+                    
+                    <!-- Feedback Section -->
+                    {% if feedback_list %}
+                    <div style="margin-top: var(--space-xl);">
+                        <div style="color: var(--gray-700); font-weight: 600; margin-bottom: var(--space-md); font-size: 1.1rem;">
+                            <i class="fas fa-comments"></i> Admin Feedback
+                        </div>
+                        {% for feedback in feedback_list %}
+                        <div style="background: var(--info-light); border-left: 4px solid var(--info); padding: var(--space-md); margin-bottom: var(--space-sm); border-radius: var(--radius-md);">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm);">
+                                <div style="font-weight: 600; color: var(--dark);">
+                                    <i class="fas fa-user-shield"></i> {{ feedback.admin.get_full_name|default:feedback.admin.username }}
+                                </div>
+                                <div style="font-size: 0.85rem; color: var(--gray-500);">
+                                    {{ feedback.created_at|date:"M d, Y H:i" }}
+                                </div>
+                            </div>
+                            <div style="color: var(--gray-700); line-height: 1.5;">
+                                {{ feedback.message|linebreaksbr }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

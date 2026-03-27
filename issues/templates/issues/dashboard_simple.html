@@ -1,182 +1,319 @@
-{% extends 'issues/base.html' %}
+{% extends 'issues/base_premium.html' %}
 
 {% block title %}Dashboard - Middelburg Municipality Helpdesk{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+<div class="premium-content">
+    <!-- Welcome Section -->
+    <div class="premium-card" style="text-align: center;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="flex: 1; text-align: left;">
+                <h1 style="color: var(--dark); margin-bottom: 0.5rem;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard Overview
+                </h1>
+                <p style="color: #6b7280;">
+                    Welcome back, <strong style="color: var(--primary);">{{ user.get_full_name|default:user.username }}</strong>
+                </p>
+                <p style="color: #6b7280; font-size: 0.9rem;">
+                    Here's your community service overview and recent activity.
+                </p>
+            </div>
+            <div>
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold; margin: 0 auto;">
+                    {{ user.username|first|upper }}
                 </div>
-                <div class="card-body">
-                    <h4>Welcome, {{ user.get_full_name|default:user.username }}!</h4>
-                    <p class="text-muted">Here's your community service overview.</p>
-                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <a href="{% url 'report_issue' %}" class="btn-premium">
+                <i class="fas fa-plus-circle"></i> Report New Issue
+            </a>
+            <a href="{% url 'track_issue' %}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                <i class="fas fa-search"></i> Track Issues
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-chart-line"></i> Service Statistics
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <i class="fas fa-list-alt fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">{{ stats.total }}</div>
+                <div style="color: #6b7280; font-size: 0.9rem;">Total Issues</div>
+            </div>
+            
+            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <i class="fas fa-paper-plane fa-2x" style="color: var(--info); margin-bottom: 1rem;"></i>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--info); margin-bottom: 0.5rem;">{{ stats.submitted }}</div>
+                <div style="color: #6b7280; font-size: 0.9rem;">Submitted</div>
+            </div>
+            
+            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <i class="fas fa-spinner fa-2x" style="color: var(--warning); margin-bottom: 1rem;"></i>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--warning); margin-bottom: 0.5rem;">{{ stats.in_progress }}</div>
+                <div style="color: #6b7280; font-size: 0.9rem;">In Progress</div>
+            </div>
+            
+            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <i class="fas fa-check-circle fa-2x" style="color: var(--success); margin-bottom: 1rem;"></i>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">{{ stats.resolved }}</div>
+                <div style="color: #6b7280; font-size: 0.9rem;">Resolved</div>
+            </div>
+            
+            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 15px;">
+                <i class="fas fa-comments fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">{{ feedback_count }}</div>
+                <div style="color: #6b7280; font-size: 0.9rem;">Feedback Messages</div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="fas fa-list-alt fa-3x text-primary mb-3"></i>
-                    <h5>{{ stats.total }}</h5>
-                    <p class="text-muted">Total Issues</p>
-                </div>
-            </div>
+    <!-- Recent Issues -->
+    <div class="premium-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="color: var(--dark); margin: 0;">
+                <i class="fas fa-history"></i> Recent Issues
+            </h2>
+            <a href="{% url 'track_issue' %}" class="btn-premium">
+                <i class="fas fa-eye"></i> View All Reports
+            </a>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
-                    <h5>{{ stats.submitted }}</h5>
-                    <p class="text-muted">Submitted</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="fas fa-spinner fa-3x text-info mb-3"></i>
-                    <h5>{{ stats.in_progress }}</h5>
-                    <p class="text-muted">In Progress</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
-                    <h5>{{ stats.resolved }}</h5>
-                    <p class="text-muted">Resolved</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-history"></i> Recent Issues</h5>
-                </div>
-                <div class="card-body">
-                    {% if page_obj %}
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Reference</th>
-                                        <th>Title</th>
-                                        <th>Category</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for issue in page_obj %}
-                                    <tr>
-                                        <td><code>{{ issue.reference_number }}</code></td>
-                                        <td><strong>{{ issue.title }}</strong></td>
-                                        <td><span class="badge bg-info">{{ issue.get_category_display }}</span></td>
-                                        <td>
-                                            {% if issue.status == 'submitted' %}
-                                                <span class="badge bg-warning">{{ issue.get_status_display }}</span>
-                                            {% elif issue.status == 'in_progress' %}
-                                                <span class="badge bg-info">{{ issue.get_status_display }}</span>
-                                            {% elif issue.status == 'resolved' %}
-                                                <span class="badge bg-success">{{ issue.get_status_display }}</span>
-                                            {% else %}
-                                                <span class="badge bg-danger">{{ issue.get_status_display }}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ issue.created_at|date:"M d, Y" }}</td>
-                                        <td>
-                                            <a href="{% url 'track_issue_detail' issue.reference_number %}" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-eye"></i> View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pagination -->
-                        {% if page_obj.has_other_pages %}
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                {% if page_obj.has_previous %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                                    </li>
+        
+        {% if page_obj %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f8fafc; border-bottom: 2px solid #e5e7eb;">
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Reference</th>
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Title</th>
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Category</th>
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Status</th>
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Date</th>
+                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in page_obj %}
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 1rem;">
+                                <span style="font-family: monospace; background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                                    {{ issue.reference_number }}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <strong>{{ issue.title }}</strong>
+                                {% if issue.image %}
+                                <br>
+                                <img src="{{ issue.image.url }}" alt="Issue Image" style="max-width: 60px; max-height: 40px; border-radius: 8px; margin-top: 0.5rem;">
                                 {% endif %}
-                                
-                                <li class="page-item active">
-                                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-                                </li>
-                                
-                                {% if page_obj.has_next %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                                    </li>
+                                {% if issue.feedback.exists %}
+                                <br>
+                                <span style="background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem; margin-top: 0.5rem; display: inline-block;">
+                                    <i class="fas fa-comment"></i> {{ issue.feedback.count }} Feedback
+                                </span>
                                 {% endif %}
-                            </ul>
-                        </nav>
-                        {% endif %}
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
-                            <h5>No Issues Found</h5>
-                            <p class="text-muted">You haven't reported any issues yet.</p>
-                            <a href="{% url 'report_issue' %}" class="btn btn-primary">
-                                <i class="fas fa-plus-circle"></i> Report Your First Issue
-                            </a>
-                        </div>
-                    {% endif %}
-                </div>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <span style="background: var(--primary-light); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">
+                                    {{ issue.get_category_display }}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem;">
+                                {% if issue.status == 'submitted' %}
+                                    <span style="background: var(--info); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">
+                                        {{ issue.get_status_display }}
+                                    </span>
+                                {% elif issue.status == 'in_progress' %}
+                                    <span style="background: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">
+                                        {{ issue.get_status_display }}
+                                    </span>
+                                {% elif issue.status == 'resolved' %}
+                                    <span style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">
+                                        {{ issue.get_status_display }}
+                                    </span>
+                                {% else %}
+                                    <span style="background: var(--danger); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">
+                                        {{ issue.get_status_display }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; color: #6b7280;">{{ issue.created_at|date:"M d, Y" }}</td>
+                            <td style="padding: 1rem;">
+                                <a href="{% url 'track_issue_detail' issue.reference_number %}" class="btn-premium" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
+            
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2rem;">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                {% endif %}
+                
+                <span style="padding: 0.5rem 1rem; background: #f3f4f6; border-radius: 8px; font-weight: 600;">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% else %}
+            <div style="text-align: center; padding: 3rem;">
+                <i class="fas fa-inbox fa-3x" style="color: #9ca3af; margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 0.5rem;">No Issues Found</h3>
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">You haven't reported any issues yet. Start by reporting your first community issue.</p>
+                <a href="{% url 'report_issue' %}" class="btn-premium">
+                    <i class="fas fa-plus-circle"></i> Report Your First Issue
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-bolt"></i> Quick Actions
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <a href="{% url 'report_issue' %}" class="btn-premium" style="text-align: center;">
+                <i class="fas fa-map-marker-alt"></i> Report Issue
+            </a>
+            <a href="{% url 'track_issue' %}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary); text-align: center;">
+                <i class="fas fa-search"></i> Track Status
+            </a>
+            {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="btn-premium" style="background: transparent; color: var(--primary); border: 2px solid var(--primary); text-align: center;">
+                    <i class="fas fa-cog"></i> Admin Panel
+                </a>
+            {% endif %}
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-premium" style="background: transparent; color: var(--danger); border: 2px solid var(--danger); width: 100%; text-align: center;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-2">
-                            <a href="{% url 'report_issue' %}" class="btn btn-primary w-100">
-                                <i class="fas fa-plus-circle"></i> Report Issue
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="{% url 'track_issue' %}" class="btn btn-info w-100">
-                                <i class="fas fa-search"></i> Track Status
-                            </a>
-                        </div>
-                        {% if user.is_staff %}
-                        <div class="col-md-3 mb-2">
-                            <a href="{% url 'admin_dashboard' %}" class="btn btn-warning w-100">
-                                <i class="fas fa-cog"></i> Admin Panel
-                            </a>
-                        </div>
-                        {% endif %}
-                        <div class="col-md-3 mb-2">
-                            <a href="{% url 'logout' %}" class="btn btn-danger w-100">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <!-- Guidelines Section -->
+    <div class="premium-card">
+        <h2 style="color: var(--dark); margin-bottom: 2rem;">
+            <i class="fas fa-info-circle"></i> Quick Tips
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="text-align: center;">
+                <i class="fas fa-camera fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Add Photos</h3>
+                <p style="color: #6b7280;">Include clear photos when reporting issues for faster resolution.</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <i class="fas fa-map-pin fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Be Specific</h3>
+                <p style="color: #6b7280;">Provide exact location details to help our team respond quickly.</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <i class="fas fa-clock fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">Track Progress</h3>
+                <p style="color: #6b7280;">Use your reference number to track the status of your reports.</p>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Additional table styling to match premium design */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead tr {
+        display: none;
+    }
+    
+    tr {
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+    
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0 !important;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    td:last-child {
+        border-bottom: none;
+    }
+    
+    td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--dark);
+        margin-right: 1rem;
+    }
+}
+
+.btn-premium {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Status colors */
+:root {
+    --info: #3b82f6;
+    --warning: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --primary-light: #60a5fa;
+}
+</style>
 {% endblock %}

@@ -36,3 +36,15 @@ class Issue(models.Model):
     
     def __str__(self):
         return f"{self.reference_number} - {self.title}"
+
+class Feedback(models.Model):
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='feedback')
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin_feedback')
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Feedback for {self.issue.reference_number}"

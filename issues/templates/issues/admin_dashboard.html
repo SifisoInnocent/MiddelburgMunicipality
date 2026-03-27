@@ -948,6 +948,16 @@ nav button:hover, .navbar button:hover, .top-nav button:hover {
                             </button>
                         </form>
                         
+                        <!-- Feedback Form -->
+                        <form method="post" action="{% url 'add_feedback' issue.id %}" style="margin-top: var(--space-md);">
+                            {% csrf_token %}
+                            <textarea name="feedback_message" placeholder="Add feedback for the user..." style="width: 100%; min-height: 80px; padding: var(--space-sm); border: 1px solid var(--gray-300); border-radius: var(--radius-sm); resize: vertical; margin-bottom: var(--space-sm);"></textarea>
+                            <button type="submit" class="btn-feedback" style="background: var(--info); color: white; padding: var(--space-sm) var(--space-md); border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem;">
+                                <i class="fas fa-comment"></i>
+                                Add Feedback
+                            </button>
+                        </form>
+                        
                         <div class="action-buttons">
                             <a href="#" class="btn-view">
                                 <i class="fas fa-eye"></i>
